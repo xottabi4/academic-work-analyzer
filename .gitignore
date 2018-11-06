@@ -109,4 +109,4 @@ venv.bak/
 *.sqlite
 resources/*
 /notes.txt
-!/properties.py
+properties.py
