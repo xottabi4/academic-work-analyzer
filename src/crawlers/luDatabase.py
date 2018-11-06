@@ -21,80 +21,76 @@ import properties
 # Link to particular files
 # https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-02136?func=service&doc_library=LUA02&doc_number=000023898&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA
 # https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-02140?func=service&doc_library=LUA02&doc_number=000023303&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA
+class LuDatabaseCrawler:
 
-def findAllLinks(soup):
-    return soup.findAll('a', attrs={'href': re.compile("^https://")})
+    def __init__(self):
+        self.USER_PATH_ID = self.findUserIdPath()
 
+    def findAllLinks(self, soup):
+        return soup.findAll('a', attrs={'href': re.compile("^https://")})
 
-def extractParticularLink(soup, index):
-    linkLocation = findAllLinks(soup)[index]
-    return linkLocation.get('href')
+    def extractParticularLink(self, soup, index):
+        linkLocation = self.findAllLinks(soup)[index]
+        return linkLocation.get('href')
 
+    def findUserIdPath(self):
+        link = "http://libra.lanet.lv/F?RN=" + str(random.randint(1, 50))
+        response = requests.get(link)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        link = self.extractParticularLink(soup, 0)
 
-def findUserIdPath():
-    link = "http://libra.lanet.lv/F?RN=" + str(random.randint(1, 50))
-    response = requests.get(link)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    link = extractParticularLink(soup, 0)
+        documentUrl = urlparse(link)
+        return documentUrl.path
 
-    documentUrl = urlparse(link)
-    return documentUrl.path
+    def getDocumentFromDataBase(self, documentNumber):
+        documentNumber = "%09d" % documentNumber
+        url = "https://kopkatalogs.lv" + self.USER_PATH_ID + "?func=service&doc_library=LUA02&doc_number=" \
+              + documentNumber + "&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA"
+        print(url)
+        response = requests.get(url)
 
+        if response.text.__contains__("The Object doesn't exist."):
+            raise ValueError("Invalid document number provided: " + documentNumber)
 
-USER_PATH_ID = findUserIdPath()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        link = self.extractParticularLink(soup, 0)
 
+        documentGetForm = requests.get(link)
 
-def getDocumentFromDataBase(documentNumber):
-    documentNumber = "%09d" % documentNumber
-    url = "https://kopkatalogs.lv" + USER_PATH_ID + "?func=service&doc_library=LUA02&doc_number=" \
-          + documentNumber + "&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA"
-    print(url)
-    response = requests.get(url)
+        soup = BeautifulSoup(documentGetForm.text, 'html.parser')
+        documentLink = soup.find("body").get("onload").split("=\"")[1].strip("\"")
 
-    if response.text.__contains__("The Object doesn't exist."):
-        raise ValueError("Invalid document number provided: " + documentNumber)
+        documentUrl = urlparse(documentLink)
 
-    soup = BeautifulSoup(response.text, 'html.parser')
-    link = extractParticularLink(soup, 0)
+        query = parse_qs(documentUrl.query)
 
-    documentGetForm = requests.get(link)
+        documentUrlPath = documentUrl
+        documentUrlPath = documentUrlPath._replace(query='')
 
-    soup = BeautifulSoup(documentGetForm.text, 'html.parser')
-    documentLink = soup.find("body").get("onload").split("=\"")[1].strip("\"")
+        r = requests.post(documentUrlPath.geturl(),
+            data={'FN': query.get("fn")[0], 'L': query.get("l")[0], 'USR': properties.laisUsername,
+                "PWD": properties.laisPassword})
 
-    documentUrl = urlparse(documentLink)
+        documentFilename = query.get("fn")[0]
+        documentFilename = documentFilename.replace("/", "-")
+        return [r.content, documentFilename]
 
-    query = parse_qs(documentUrl.query)
+    def findAndSaveDocument(self, documentNumber):
+        # try:
+        document, documentFilename = self.getDocumentFromDataBase(documentNumber)
+        documentPath = os.path.join(definitions.documentStoragePath, documentFilename)
+        self.saveAndValidatePDF(document, documentPath)
+        # except ValueError as err:
+        #     print(err)
+        #     return
 
-    documentUrlPath = documentUrl
-    documentUrlPath = documentUrlPath._replace(query='')
+        return documentPath
 
-    r = requests.post(documentUrlPath.geturl(),
-        data={'FN': query.get("fn")[0], 'L': query.get("l")[0], 'USR': properties.laisUsername,
-            "PWD": properties.laisPassword})
-
-    documentFilename = query.get("fn")[0]
-    documentFilename = documentFilename.replace("/", "-")
-    return [r.content, documentFilename]
-
-
-def findAndSaveDocument(documentNumber):
-    # try:
-    document, documentFilename = getDocumentFromDataBase(documentNumber)
-    documentPath = os.path.join(definitions.documentStoragePath, documentFilename)
-    saveAndValidatePDF(document, documentPath)
-    # except ValueError as err:
-    #     print(err)
-    #     return
-
-    return documentPath
-
-
-def saveAndValidatePDF(document, documentPath):
-    with open(documentPath, 'wb') as f:
-        f.write(document)
-    try:
-        PyPDF2.PdfFileReader(open(documentPath, "rb"))
-    except PdfReadError:
-        os.remove(documentPath)
-        raise ValueError("Invalid PDF file:" + documentPath)
+    def saveAndValidatePDF(self, document, documentPath):
+        with open(documentPath, 'wb') as f:
+            f.write(document)
+        try:
+            PyPDF2.PdfFileReader(open(documentPath, "rb"))
+        except PdfReadError:
+            os.remove(documentPath)
+            raise ValueError("Invalid PDF file:" + documentPath)

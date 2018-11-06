@@ -5,15 +5,16 @@ from requests.exceptions import SSLError
 from sqlitedict import SqliteDict
 
 import definitions
-from crawlers.luDatabase import findAndSaveDocument
+from crawlers.luDatabase import LuDatabaseCrawler
 from pdf_processing.pdfDocumentProcessing import extractAbstract
 
 
 def crawlForData(mydict):
+    crawler = LuDatabaseCrawler()
     # start from 990
     for documentNumber in range(1618, 1619):
         try:
-            documentPath = findAndSaveDocument(documentNumber)
+            documentPath = crawler.findAndSaveDocument(documentNumber)
             text = extractAbstract(documentPath)
         except SSLError as err:
             print(err)
@@ -55,7 +56,7 @@ def main():
     # academicFiles = os.listdir(definitions.documentStoragePath)
     # reextractAbstracts(academicFiles, mydict)
 
-    # printContents(mydict)
+    printContents(mydict)
     mydict.close()
 
 
