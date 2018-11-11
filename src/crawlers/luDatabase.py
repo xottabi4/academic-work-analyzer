@@ -12,15 +12,6 @@ import definitions
 import properties
 
 
-#  looks like numbers start from around 990 and forward
-# https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-02136?func=service&doc_library=LUA02&doc_number=000000990&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA
-
-
-# link for search
-# https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-00754?func=find-b&request=a&find_code=WRD&adjacent=N&x=28&y=14&filter_code_2=WYR&filter_request_2=&filter_code_3=WYR&filter_request_3=&filter_code_4=WHS&filter_request_4=
-# Link to particular files
-# https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-02136?func=service&doc_library=LUA02&doc_number=000023898&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA
-# https://kopkatalogs.lv/F/U91YGQNHBFCKVGA56GEECNSK933Q5DHQUUL92QBIVP4AX2H4P7-02140?func=service&doc_library=LUA02&doc_number=000023303&line_number=0001&func_code=WEB-BRIEF&service_type=MEDIA
 class LuDatabaseCrawler:
 
     def __init__(self):
@@ -76,13 +67,9 @@ class LuDatabaseCrawler:
         return [r.content, documentFilename]
 
     def findAndSaveDocument(self, documentNumber):
-        # try:
         document, documentFilename = self.getDocumentFromDataBase(documentNumber)
         documentPath = os.path.join(definitions.documentStoragePath, documentFilename)
         self.saveAndValidatePDF(document, documentPath)
-        # except ValueError as err:
-        #     print(err)
-        #     return
 
         return documentPath
 

@@ -1,21 +1,23 @@
 import os
 
 import PyPDF2
+import pymongo as pymongo
 from requests.exceptions import SSLError
-from sqlitedict import SqliteDict
 
 import definitions
 from crawlers.luDatabase import LuDatabaseCrawler
-from pdf_processing.pdfDocumentProcessing import extractAbstract
+from db.dbUtils import createRecord
+from pdf_processing.rule_based.abstractExtractor import reextractAbstracts
+from pdf_processing.rule_based.purposeExtractor import reextractPurposes
+from properties import MONGODB_CONNECTION, DATABASE_NAME, COLLECTION_NAME
 
 
-def crawlForData(mydict):
+def crawlForData(collection):
     crawler = LuDatabaseCrawler()
     # start from 990
-    for documentNumber in range(1618, 1619):
+    for documentNumber in range(1650, 1700):
         try:
             documentPath = crawler.findAndSaveDocument(documentNumber)
-            text = extractAbstract(documentPath)
         except SSLError as err:
             print(err)
             continue
@@ -23,49 +25,35 @@ def crawlForData(mydict):
             print(err)
             continue
 
-        if documentPath in mydict:
+        if collection.find_one(documentPath):
             print("Document already in DB!")
             continue
 
         print(documentPath)
-        print(text)
-        mydict[documentPath] = text
-
-
-def reextractAbstracts(academicFiles, mydict):
-    for academicFile in academicFiles:
-        documentPath = os.path.join(definitions.documentStoragePath, academicFile)
-        print(documentPath)
-        text = extractAbstract(documentPath)
-        print(text)
-        mydict[documentPath] = text
+        collection.save(createRecord(documentPath))
 
 
 def viewFileInfo(academicFiles):
     for academicFile in academicFiles:
         documentPath = os.path.join(definitions.documentStoragePath, academicFile)
-        pdfFIle = PyPDF2.PdfFileReader(open(documentPath, "rb"))
-        print(pdfFIle.documentInfo)
+        pdfFile = PyPDF2.PdfFileReader(open(documentPath, "rb"))
+        print(pdfFile.documentInfo)
 
 
 def main():
-    mydict = SqliteDict(os.path.join(definitions.rootDirectory, "academic_work_abstracts.sqlite"), autocommit=True)
+    collection = pymongo.MongoClient(MONGODB_CONNECTION)[DATABASE_NAME][COLLECTION_NAME]
+    # collection.drop()
 
-    # crawlForData(mydict)
+    # crawlForData(collection)
 
     # academicFiles = os.listdir(definitions.documentStoragePath)
-    # reextractAbstracts(academicFiles, mydict)
-
-    printContents(mydict)
-    mydict.close()
-
-
-def printContents(mydict):
-    print(len(mydict))
-    for key, value in mydict.items():
-        print(key)
-        print(len(value))
-        print(value)
+    # reextractAbstracts(academicFiles, collection)
+    # reextractPurposes(collection)
+    for x in collection.find():
+        print(x)
+    #
+    # abstract = collection.find_one(
+    #     "/home/xottabi4/Documents/augstskola/magistratura/magistra_darbs/academic-work-analyzer/resources/F91698-Mertena_Laura_Ekon010293.pdf")
 
 
 if __name__ == '__main__':

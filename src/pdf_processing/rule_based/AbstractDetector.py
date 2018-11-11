@@ -1,7 +1,8 @@
 import re
 
-TABLE_OF_CONTENTS = "Saturs|Satura rādītājs"
-ABSTRACT = "Anotācija"
+TABLE_OF_CONTENTS = "(Saturs|Satura rādītājs)"
+# Some strange people use Rezumējums instead of Anotācija
+ABSTRACT = "(Anotācija|Rezumējums)"
 MAX_ACCEPTABLE_NUMBER_COUNT = 50
 
 

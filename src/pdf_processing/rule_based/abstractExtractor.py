@@ -9,7 +9,9 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.psparser import PSSyntaxError
 
-from pdf_processing.AbstractDetector import AbstractDetector, ABSTRACT
+import definitions
+from db.dbUtils import createRecord
+from pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
 
 otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
 
@@ -41,10 +43,8 @@ def extractRawAbstract(pdf_path):
         for currentPage in pdfPageList[1:]:
             page_interpreter.process_page(currentPage)
             currentPageText = fake_file_handle.getvalue()
-
-            print(currentPageText)
-            print(len(currentPageText))
-
+            # print(currentPageText)
+            # print(len(currentPageText))
             currentPageText = preprocessText(currentPageText)
             if abstractDetector.isFirstAbstractPage(currentPageText):
                 validText += " " + currentPageText
@@ -65,12 +65,12 @@ def extractRawAbstract(pdf_path):
 
 
 def extractAbstract(documentPath, deletePdfIfNoAbstractFound=False):
-    # Some strange people use Rezumējums instead of Anotācija
     text = extractRawAbstract(documentPath)
     if not text:
         if deletePdfIfNoAbstractFound:
             os.remove(documentPath)
-        raise ValueError("No latvian abstract found in document!")
+        print("No latvian abstract found in document!")
+        return None
     text = postprocessAbstract(text)
     return text
 
@@ -90,3 +90,12 @@ def postprocessAbstract(text):
     # TODO some strange people write both latvian and english anotations in single page, find way to remove english one
 
     return text
+
+
+def reextractAbstracts(academicFiles, collection):
+    for academicFile in academicFiles:
+        documentPath = os.path.join(definitions.documentStoragePath, academicFile)
+        print(documentPath)
+        abstract = extractAbstract(documentPath)
+        print(abstract)
+        collection.save(createRecord(documentPath, abstract))
