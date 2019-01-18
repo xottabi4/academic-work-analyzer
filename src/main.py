@@ -1,15 +1,14 @@
 import os
 
 import PyPDF2
-import pymongo as pymongo
 from requests.exceptions import SSLError
 
 import definitions
-from crawlers.luDatabase import LuDatabaseCrawler
-from db.dbUtils import createRecord
-from pdf_processing.rule_based.abstractExtractor import reextractAbstracts
-from pdf_processing.rule_based.purposeExtractor import reextractPurposes
-from properties import MONGODB_CONNECTION, DATABASE_NAME, COLLECTION_NAME
+from crawlers.LuDatabase import LuDatabaseCrawler
+from db.Database import regexDatabase
+from db.DbUtils import createRecord
+from pdf_processing.rule_based.AbstractExtractor import reextractAbstracts
+from pdf_processing.rule_based.PurposeExtractor import reextractPurposes
 
 
 def crawlForData(collection):
@@ -17,7 +16,7 @@ def crawlForData(collection):
     # start from 990
     for documentNumber in range(1650, 1700):
         try:
-            documentPath = crawler.findAndSaveDocument(documentNumber)
+            documentFilename = crawler.findAndSaveDocument(documentNumber)
         except SSLError as err:
             print(err)
             continue
@@ -25,12 +24,12 @@ def crawlForData(collection):
             print(err)
             continue
 
-        if collection.find_one(documentPath):
+        if collection.find_one(documentFilename):
             print("Document already in DB!")
             continue
 
-        print(documentPath)
-        collection.save(createRecord(documentPath))
+        print(documentFilename)
+        collection.save(createRecord(documentFilename))
 
 
 def viewFileInfo(academicFiles):
@@ -41,16 +40,16 @@ def viewFileInfo(academicFiles):
 
 
 def main():
-    collection = pymongo.MongoClient(MONGODB_CONNECTION)[DATABASE_NAME][COLLECTION_NAME]
+    collection = regexDatabase
     # collection.drop()
 
     # crawlForData(collection)
 
-    # academicFiles = os.listdir(definitions.documentStoragePath)
-    # reextractAbstracts(academicFiles, collection)
-    # reextractPurposes(collection)
-    for x in collection.find():
-        print(x)
+    academicFiles = os.listdir(definitions.documentStoragePath)
+    reextractAbstracts(academicFiles, collection)
+    reextractPurposes(collection)
+    # for x in collection.find():
+    #     print(x)
     #
     # abstract = collection.find_one(
     #     "/home/xottabi4/Documents/augstskola/magistratura/magistra_darbs/academic-work-analyzer/resources/F91698-Mertena_Laura_Ekon010293.pdf")

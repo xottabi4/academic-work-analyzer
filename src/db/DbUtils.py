@@ -1,6 +1,7 @@
 ID_DOCUMENT = "_id"
 PURPOSE_DOCUMENT = "purpose"
 ABSTRACT_DOCUMENT = "abstract"
+PURPOSE_SENTENCE_ID_DOCUMENT = "purpose_sentence_id"
 
 
 def createRecord(pdfFilePath, abstract=None, purpose=None):
@@ -12,8 +13,11 @@ def createRecord(pdfFilePath, abstract=None, purpose=None):
     return record
 
 
-def createPurpose(purpose):
-    return {PURPOSE_DOCUMENT: purpose}
+def createPurpose(purpose, purposeSentenceId=None):
+    record = {PURPOSE_DOCUMENT: purpose}
+    if purposeSentenceId:
+        record.update({PURPOSE_SENTENCE_ID_DOCUMENT: purposeSentenceId})
+    return record
 
 
 def createAbstract(abstract):

@@ -71,7 +71,7 @@ class LuDatabaseCrawler:
         documentPath = os.path.join(definitions.documentStoragePath, documentFilename)
         self.saveAndValidatePDF(document, documentPath)
 
-        return documentPath
+        return documentFilename
 
     def saveAndValidatePDF(self, document, documentPath):
         with open(documentPath, 'wb') as f:

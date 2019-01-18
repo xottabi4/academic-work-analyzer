@@ -10,7 +10,7 @@ from pdfminer.pdfpage import PDFPage
 from pdfminer.psparser import PSSyntaxError
 
 import definitions
-from db.dbUtils import createRecord
+from db.DbUtils import createRecord
 from pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
 
 otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
@@ -89,6 +89,7 @@ def postprocessAbstract(text):
 
     # TODO some strange people write both latvian and english anotations in single page, find way to remove english one
 
+    text = text.replace("”.", "”. ")
     return text
 
 
@@ -98,4 +99,4 @@ def reextractAbstracts(academicFiles, collection):
         print(documentPath)
         abstract = extractAbstract(documentPath)
         print(abstract)
-        collection.save(createRecord(documentPath, abstract))
+        collection.save(createRecord(academicFile, abstract))

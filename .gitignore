@@ -107,6 +107,6 @@ venv.bak/
 
 # project specific
 *.sqlite
-resources/*
 /notes.txt
 properties.py
+/resources/academicFiles/*

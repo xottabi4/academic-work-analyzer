@@ -1,6 +1,7 @@
 import re
 
-from db.dbUtils import createPurpose, ABSTRACT_DOCUMENT, ID_DOCUMENT
+from db.DbUtils import createPurpose, ABSTRACT_DOCUMENT, ID_DOCUMENT
+from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 
 
 def isPurposeSentence(sentence):
@@ -8,10 +9,10 @@ def isPurposeSentence(sentence):
 
 
 def extractPurpose(abstract):
-    abstractSentences = abstract.split(".")
-    for sentence in abstractSentences:
+    abstractSentences = SENTENCE_SPLITTER.tokenize(abstract)
+    for idx, sentence in enumerate(abstractSentences):
         if isPurposeSentence(sentence):
-            return sentence.strip()
+            return idx, sentence.strip()
 
 
 def reextractPurposes(collection):
