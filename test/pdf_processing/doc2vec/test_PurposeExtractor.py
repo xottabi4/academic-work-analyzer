@@ -56,7 +56,8 @@ class Doc2VecPurposeExtractorTest(TestCase):
         y_pred = self.logreg.predict([testSentenceVector])
         self.assertEqual(expectedOutput, y_pred[0])
 
-    def manual_test(self, sentence):
+    def manual_test(self,
+            sentence="Mērķis Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"):
         """
         Some useful methods for model valuation
         :param sentence:
@@ -76,6 +77,9 @@ class Doc2VecPurposeExtractorTest(TestCase):
         y_pred = self.logreg.predict([testSentenceVector])
         print("y_pred")
         print(y_pred)
+
+        print("labels")
+        print(self.logreg.classes_)
 
         print(numpy.round((self.logreg.predict_proba([testSentenceVector])), 3))
 

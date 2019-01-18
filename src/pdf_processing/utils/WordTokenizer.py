@@ -21,9 +21,19 @@ _stopWords.update(_latvianStopWords)
 
 
 def removeCommonWordsAndTokenize(sentence):
-    rawSentence = sentence.translate(str.maketrans('', '', STRING_PUNCTUATION))
+    rawSentence = strip_formatting(sentence)
+    return tokenize(rawSentence)
+
+
+def tokenize(rawSentence):
     sentenceWords = list()
-    for word in rawSentence.lower().split():
+    for word in rawSentence.split():
         if word not in _stopWords:
             sentenceWords.append(word)
     return sentenceWords
+
+
+def strip_formatting(sentence):
+    return sentence \
+        .translate(str.maketrans('', '', STRING_PUNCTUATION)) \
+        .lower()
