@@ -7,7 +7,6 @@ from nltk.tokenize.punkt import PunktTrainer
 from db.DbUtils import ABSTRACT_DOCUMENT
 from definitions import abbreviationsStoragePath
 from pdf_processing.utils.FileUtils import readTextFileLines
-from properties import DATABASE_NAME, MONGODB_CONNECTION
 
 nltk.download('punkt')
 
@@ -49,6 +48,8 @@ def trainSentenceTokenizer():
     Method trains custom sentence tokenizer using punk.
     At the moment it preforms worse then plain englihs one (most likely due to not that much data)
     """
+    from properties import DATABASE_NAME, MONGODB_CONNECTION
+
     database = pymongo.MongoClient(MONGODB_CONNECTION)[DATABASE_NAME]
     collection = database["crawled-data"]
 

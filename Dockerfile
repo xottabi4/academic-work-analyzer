@@ -21,7 +21,6 @@ COPY resources ./resources
 COPY main.py .
 COPY app.ini .
 COPY definitions.py .
-COPY properties.py .
 # Finally, we run uWSGI with the ini file we
 # created earlier
 CMD [ "uwsgi", "--ini", "app.ini" ]

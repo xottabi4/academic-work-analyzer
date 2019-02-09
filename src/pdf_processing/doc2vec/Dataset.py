@@ -1,15 +1,10 @@
-from enum import Enum
 from random import choice
 
 from db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT
 from db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase
+from pdf_processing.doc2vec.Label import Label
 from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
-
-
-class Label(Enum):
-    PURPOSE = 'purpose_label'
-    OTHER = 'other_label'
 
 
 def prepareDatasets(database):
