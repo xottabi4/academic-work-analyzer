@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  academic-work-analyzer:
+    container_name: academic-work-analyzer
+    image: academic-work-analyzer
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - academic-work-analyzer-network
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.14.1
+    restart: always
+    depends_on:
+      - academic-work-analyzer
+    ports:
+      - 5555:80
+    volumes:
+      - ./nginx_develop.conf:/etc/nginx/nginx.conf
+    networks:
+      - academic-work-analyzer-network
+
+networks:
+  academic-work-analyzer-network:
