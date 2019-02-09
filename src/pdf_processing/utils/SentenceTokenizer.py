@@ -5,7 +5,7 @@ import pymongo
 from nltk.tokenize.punkt import PunktTrainer
 
 from db.DbUtils import ABSTRACT_DOCUMENT
-from definitions import rootDirectory, abbreviationsStoragePath
+from definitions import abbreviationsStoragePath
 from pdf_processing.utils.FileUtils import readTextFileLines
 from properties import DATABASE_NAME, MONGODB_CONNECTION
 
@@ -67,7 +67,7 @@ def trainSentenceTokenizer():
 
 
 def loadCustomPunkt():
-    with open(os.path.join(rootDirectory, "src/pdf_processing/utils/") + "latvianPunkt.pickle", mode='rb') as fin:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/latvianPunkt.pickle", mode='rb') as fin:
         return pickle.load(fin)
 
 

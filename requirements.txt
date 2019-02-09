@@ -6,16 +6,21 @@ bs4==0.0.1
 bz2file==0.98
 certifi==2018.10.15
 chardet==3.0.4
+Click==7.0
 cloudpickle==0.6.1
 cycler==0.10.0
 dask==1.0.0
 decorator==4.3.0
 docutils==0.14
+Flask==1.0.2
 gensim==3.6.0
 idna==2.7
+itsdangerous==1.1.0
+Jinja2==2.10
 jmespath==0.9.3
 kiwisolver==1.0.1
 lime==0.1.1.32
+MarkupSafe==1.1.0
 matplotlib==3.0.2
 networkx==2.2
 nltk==3.4
@@ -39,3 +44,5 @@ six==1.11.0
 smart-open==1.7.1
 toolz==0.9.0
 urllib3==1.24
+uWSGI==2.0.17.1
+Werkzeug==0.14.1

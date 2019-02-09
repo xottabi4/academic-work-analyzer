@@ -1,5 +1,4 @@
 import pymongo
-from pymongo.collection import Collection
 
 from properties import MONGODB_CONNECTION, DATABASE_NAME, COLLECTION_NAME
 
