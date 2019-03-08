@@ -10,8 +10,9 @@ from definitions import doc2vecStoragePath
 from pdf_processing.utils.FileUtils import saveContentToFile
 from pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
 
-model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model5"))
-logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg.params"))
+version = "11"
+model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
+logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
 
 
 def predict(model, logreg, x):
@@ -56,7 +57,7 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
         top_labels=1,
         # How many words in our sentence to include in the explanation. You can try different values.
         num_features=100,
-        num_samples=100000
+        num_samples=10000
     )
 
     # Save the explanation to an HTML file so it's easy to view.
@@ -68,5 +69,5 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
 
 if __name__ == '__main__':
     testSentence = "Mērķis ir izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"
-    output_filename = os.path.join(doc2vecStoragePath, "model5_explanation.html")
+    output_filename = os.path.join(doc2vecStoragePath, "model11_explanation.html")
     createModelExplanation(testSentence, output_filename)

@@ -9,8 +9,9 @@ from pdf_processing.rule_based.AbstractExtractor import extractAbstract, extract
 from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
-model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model5"))
-logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg.params"))
+version = "8"
+model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
+logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
 
 
 def processAcademicWork(filePath):
@@ -32,4 +33,10 @@ def extractDataFromAbstract(abstract):
         y_pred = logreg.predict([testSentenceVector])
         if Label.PURPOSE.value == y_pred[0]:
             data.update({Label.PURPOSE.value: sentence})
+        elif Label.TASKS.value == y_pred[0]:
+            tasks = data.get(Label.TASKS.value)
+            if not tasks:
+                tasks = list()
+            tasks.append(sentence)
+            data.update({Label.TASKS.value: tasks})
     return data

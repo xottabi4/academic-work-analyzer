@@ -9,8 +9,6 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.psparser import PSSyntaxError
 
-from definitions import documentStoragePath
-from db.DbUtils import createRecord
 from pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
 
 otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
@@ -99,14 +97,15 @@ def postprocessAbstract(text):
 
     # TODO some strange people write both latvian and english anotations in single page, find way to remove english one
 
-    text = text.replace("”.", "”. ")
+    text = text.replace(".", ". ")
+
+    # replace bulletpoint with dot in order to separate sentences
+    text = text.replace("•", ". ")
+
+    # in order to separate task, conclusion and result lists.
+    text = text.replace(";", ". ")
+
+    # TODO check how this affects
+    # This statement affects all whitespace characters (space, tab, newline, return, formfeed)
+    text = " ".join(text.split())
     return text
-
-
-def reextractAbstracts(academicFiles, collection):
-    for academicFile in academicFiles:
-        documentPath = os.path.join(documentStoragePath, academicFile)
-        print(documentPath)
-        abstract = extractAbstract(documentPath)
-        print(abstract)
-        collection.save(createRecord(academicFile, abstract))

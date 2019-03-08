@@ -1,7 +1,8 @@
 import json
 import os
 
-from flask import request, Flask, render_template
+from flask import request, Flask, render_template, flash, redirect, url_for, get_flashed_messages
+from werkzeug.exceptions import HTTPException
 
 from definitions import resourcesStoragePath
 from ui.AcademicWorkProcessor import processAcademicWorkFile
@@ -9,8 +10,9 @@ from ui.AcademicWorkProcessor import processAcademicWorkFile
 ALLOWED_EXTENSIONS = {'pdf'}
 UPLOAD_FOLDER = os.path.join(resourcesStoragePath, "downloads")
 app = Flask(__name__, template_folder=os.path.join(resourcesStoragePath, "templates"))
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'Dnb!R#3i%z#090l4'
 
 
 def allowed_file(filename):
@@ -20,7 +22,12 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    errorMessage = None
+    errorMessage = get_flashed_messages()
+    if not errorMessage:
+        errorMessage = None
+    else:
+        errorMessage = errorMessage[0]
+    # errorMessage = None
     jsonData = None
     fileName = None
     if request.method == 'POST':
@@ -42,20 +49,24 @@ def upload_file():
                     # pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     # file.save(pathToFile)
                     processedData = processAcademicWorkFile(file)
-                    jsonData = json.dumps(processedData, ensure_ascii=False)
-    return render_template("file_upload_form.html", errorMessage=errorMessage, response=jsonData, fileName=fileName)
+                    jsonData = json.dumps(processedData, ensure_ascii=False, sort_keys=False, indent=2)
+    return render_template("new_file_upload_form.html", errorMessage=errorMessage, response=jsonData, fileName=fileName)
 
 
-# @app.route('/uploads/<filename>')
-# def uploaded_file(filename):
-#     return send_from_directory(app.config['UPLOAD_FOLDER'],
-#         filename)
-
-
-@app.errorhandler(Exception)
+@app.errorhandler(HTTPException)
 def all_exception_handler(error):
-    return "404 Not Found", 404
-    # return error
+    if error:
+        errorMesage = "You got error {}!".format(error.code)
+    else:
+        errorMesage = None
+    return render_template("error_page.html", error=errorMesage,
+        homePage=url_for('upload_file'))
+
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash('File too large')
+    return redirect(url_for('upload_file'))
 
 
 if __name__ == '__main__':

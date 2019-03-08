@@ -1,0 +1,3 @@
+http://www.neslimo.lv/client/pme_saisinajumi_list.php?id=saisinajumi
+https://www.letonika.lv/article.aspx?id=abbrME
+http://publications.europa.eu/code/lv/lv-5000300.htm

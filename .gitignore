@@ -109,4 +109,6 @@ venv.bak/
 *.sqlite
 /notes.txt
 properties.py
-/resources/academicFiles/*
+/resources/academicFiles
+/src/pdf_processing/doc2vec/results/
+/src/pdf_processing/doc2vec/data/

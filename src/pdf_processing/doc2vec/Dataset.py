@@ -1,13 +1,13 @@
 from random import choice
 
-from db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT
+from db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT
 from db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase
 from pdf_processing.doc2vec.Label import Label
 from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 
-def prepareDatasets(database):
+def prepareDatasets():
     createAllValidData(regexDatabase, allDataDatabase)
     createTrainTestData(allDataDatabase, trainDatabase, testDatabase)
 
@@ -36,14 +36,28 @@ def trainTestSplit(allDataDatabase, testPercent=0.25):
 def createDataSet(trainData, trainDatabase):
     for record in trainData:
         abstractSentences = SENTENCE_SPLITTER.tokenize(record[ABSTRACT_DOCUMENT])
-
+        abstractSentenceIndicesToDelete = list()
         if PURPOSE_DOCUMENT in record:
-            sentenceId = record[PURPOSE_DOCUMENT][0]
-            del abstractSentences[sentenceId]
-            sentence = record[PURPOSE_DOCUMENT][1]
-            sentenceSplitted = removeCommonWordsAndTokenize(sentence)
-            trainDatabase.save({"token": [Label.PURPOSE.value], "sentence": sentenceSplitted})
+            purposes = [record[PURPOSE_DOCUMENT]]
+            for purpose in purposes:
+                sentenceId = purpose[0]
+                abstractSentenceIndicesToDelete.append(sentenceId)
+                sentence = purpose[1]
+                sentenceSplitted = removeCommonWordsAndTokenize(sentence)
+                trainDatabase.save({"token": [Label.PURPOSE.value], "sentence": sentenceSplitted})
 
+        if TASKS_DOCUMENT in record:
+            tasks = record[TASKS_DOCUMENT]
+            for task in tasks:
+                sentenceId = task[0]
+                abstractSentenceIndicesToDelete.append(sentenceId)
+                sentence = task[1]
+                sentenceSplitted = removeCommonWordsAndTokenize(sentence)
+                trainDatabase.save({"token": [Label.TASKS.value], "sentence": sentenceSplitted})
+
+        abstractSentenceIndicesToDelete.sort(reverse=True)
+        for indice in abstractSentenceIndicesToDelete:
+            del abstractSentences[indice]
         try:
             _, abstractSentence = choice(list(enumerate(abstractSentences)))
             print(abstractSentence)

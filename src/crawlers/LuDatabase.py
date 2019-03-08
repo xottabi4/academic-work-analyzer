@@ -80,4 +80,8 @@ class LuDatabaseCrawler:
             PyPDF2.PdfFileReader(open(documentPath, "rb"))
         except PdfReadError:
             os.remove(documentPath)
-            raise ValueError("Invalid PDF file:" + documentPath)
+            raise ValueError("Invalid PDF file:\n{}".format(documentPath))
+        except OSError:
+            os.remove(documentPath)
+            raise ValueError(
+                "Invalid file (most likely it is empty file or invalid encoding):\n{}".format(documentPath))

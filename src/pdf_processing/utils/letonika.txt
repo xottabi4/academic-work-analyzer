@@ -1,0 +1,204 @@
+A — austrumi, austrumos
+A- — Austrum..
+abs. — absolūts
+adm. — administratīvs
+agr. — agrākais
+aiz. — aizsardzība; aizsargājams
+ANO — Apvienoto Nāciju Organizācija
+apdz. v. — apdzīvota vieta
+apg. — apgabals
+apm. — apmēram
+apst. — apstākļi
+apstr. — apstrāde
+apzīm. — apzīmējums
+atm. — atmosfēra
+atr. — atradne, atradnes
+att. — attēls
+augļķerm. — augļķermenis
+augst. — augstums; augstiene; augstākais
+b. — beigas, beigās
+bas. — baseins
+bezmugurk. — bezmugurkaulnieks
+blīv. — blīvums
+centr. — centrālais
+CIC — Starptautiskā medību un medījamo dzīvnieku aizsardzības komiteja (Conseil International de la Chasse et de la Conservation du Gibier)
+D — dienvidi
+D- — Dienvid..
+DA — dienvidaustrumi, dienvidaustrumos
+depart. — departaments
+diam. — diametrs
+dib. — dibināts, dibinājis
+DNS — dezoksiribonukleīnskābe
+DR — dienvidrietumi, dienvidrietumos
+dz. — dzimta
+dzc. — dzelzceļš
+dziļ. — dziļums
+dzīvn. — dzīvnieks
+EDSO — Eiropas Drošības un sadarbības organizācija (The Organization for Security and Cooperation in Europe — OSCE)
+ekon. — ekonomika; ekonomisks
+eks. — eksemplārs
+elem. — elements
+ES — Eiropas Savienība
+FAO — Apvienoto Nāciju Pārtikas un lauksaimniecības organizācija (Food and Agricultur Organization of the United Nations)
+f-ja — funkcija
+fr. — franču valodā
+f-la — formula
+FSC — Meža uzraudzības padome (Forest Stewardship Council)
+g. (..g.) — gads; (..gadīgs)
+gab. — gabals
+galv. — galvenais
+gar. — garums; garākais
+gk. — galvenokārt
+GNP — Gaujas nacionālais parks
+gr. — grieķu valodā
+gs. — gadsimts
+gt. — gadu tūkstotis
+ģ. — ģints
+horiz. — horizonts; horizontāls
+iedz. — iedzīvotājs, iedzīvotāji
+iestr. — iestrāde
+it. — itāliešu valodā
+IUFRO — Starptautiskā mežu pētīšanas organizāciju savienība (International Union of Forestry Research Organizations)
+izejv. — izejvielas
+izstr. — izstrāde; izstrādājums
+kateg. — kategorija
+kl. — klase; ..klasīgs
+klim. — klimats; klimatisks
+koef. — koeficients
+kokaudz. — kokaudzētava
+kokmater. — kokmateriāli
+kompon. — komponents, komponenti
+konc. — koncentrācija; koncentrēts
+konst. — konstatēts; konstatējis
+konstr. — konstrukcija
+koppl. — kopplatība
+kult. — kultūra
+ķerm. — ķermenis
+lat. — latīņu valodā
+latv. — latviešu
+lauk. — laukums
+lauks. — lauksaimniecība; lauksaimniecisks
+lieg. — liegums
+liel. — lielums; lielākais
+līm. — līmenis
+Lja — Latvija
+LLU — Latvijas Lauksaimniecības universitāte
+LLU MF — Latvijas Lauksaimniecības universitātes Meža fakultāte
+LMPZPI — Latvijas Mežsaimniecības problēmu zinātniskās pētniecības institūts
+LPSR — Latvijas Padomju Sociālistiskā Republika
+LR — Latvijas Republika
+LU — Latvijas Universitāte
+LVMI — Latvijas Valsts mežzinātnes institūts
+LZA — Latvijas Zinātņu akadēmija
+M — mērogs
+maks. — maksimums; maksimālais; maksimāli
+mater. — materiāls
+meh. — mehānisks
+melior. — meliorācija; meliorācijas
+mēn. — mēnesis
+mežk. — mežkopība
+mežr. — mežrūpniecība
+mežs. — mežsaimniecība; mežsaimniecisks
+migr. — migrācija
+min. — minūte
+minim. — minimums; minimālais
+min-ja — ministrija
+MK — Ministru kabinets
+mld — miljards
+mlj — miljons
+MPS — Mežu pētīšanas stacija
+mugurk. — mugurkaulnieks
+nac. — nacionāls
+ned. — nedēļa
+nod. — nodaļa
+nogab. — nogabals
+nokr. — nokrišņi
+nos. — nosaukums; nosaukts
+nozīm. — nozīmīgākais, nozīmīgs
+Nr. — numurs
+obj. — objekts
+org-ja — organizācija
+p. — puse, pusē
+pag. — pagasts
+pārstr. — pārstrāde
+pārv. — pārvalde
+pas. — pasaule
+piem. — piemēram
+pils. — pilsēta
+pl. — platība
+plant. — plantācija
+plat. — platums
+pr. Kr. — pirms Kristus dzimšanas
+prod. — produkcija; produkts
+proj. — projekts
+R — Rietumi
+R- — Rietum..
+r. — rinda
+raj. — rajons
+raž. — ražošana; ražojums
+reģ. — reģions, reģionāls
+rel. — relatīvs
+RNS — ribonukleīnskābe
+resp. — respektīvi
+rez. — rezervāts
+rūpn. — rūpniecība; rūpniecisks
+s. — suga
+saimn. — saimniecība; saimniecisks
+sāk. — sākums
+SAPARD — Atbalsta programma lauksaimniecības un lauku attīstībai (Support Action Programme for Agriculture and Rural Development)
+s-ba — sabiedrība
+sēj. — sējums
+sek. — sekunde
+SIA — sabiedrība ar ierobežotu atbildību
+sist. — sistēma; sistemātisks
+sortim. — sortiments
+spec. — speciāls
+st. — stunda
+stādmater. — stādmateriāls
+starpt. — starptautisks
+strukt. — struktūra
+tab. — tabula
+tag. — tagadējais
+terit. — teritorija
+t.i. — tas ir
+tilp. — tilpums
+tk (tekstā) — tūkstotis
+t.p. — tas pats; tāds pats
+t-ra — temperatūra
+t.s. — tā sauktais
+t.sk. — to skaitā
+u.c. — un citi; un citur
+UNESCO — Apvienoto Nāciju Izglītības, zinātnes un kultūras organizācija (United Nations Educational, Scientific and Cultural Organization)
+UN ECE — Apvienoto Nāciju Eiropas ekonomikas komiteja (United Nations Economic Commission for Europe)
+ūd.-krāt. — ūdenskrātuve
+univ. — universitāte
+uzņ. — uzņēmums
+u.tml. — un tamlīdzīgi
+v. — vidus
+V-, v- — Vidus.., vidus..
+val. — valoda
+VAAD — Valsts augu aizsardzības dienests
+VARAM — Vides aizsardzības un reģionālās attīstības ministrija
+VAS — Valsts akciju sabiedrība
+vecumkl. — vecumklase
+veģ. — veģetācija; veģetatīvs
+vid. — vidējais; vidēji
+vidusl. lat. — viduslaiku latīņu valodā
+viet. — vietējais
+visp. — vispārējs; vispārīgs
+vjl. — virs jūras līmeņa
+VM — valsts mežniecība
+VMD — Valsts meža dienests
+VMS — valsts medību saimniecība
+VVM — valsts virsmežniecība
+VZD — Valsts zemes dienests
+Z — ziemeļi
+Z- — ziemeļ..
+ZA — ziemeļaustrumi, ziemeļaustrumos
+zem. — zemākais
+zin. — zinātnieks; zinātniski
+zjl. — zem jūras līmeņa
+ZPI — zinātniskās pētniecības institūts
+ZR — ziemeļrietumi, ziemeļrietumos
+ZRA — zinātnes un ražošanas apvienība
+zv. — zviedru valodā
