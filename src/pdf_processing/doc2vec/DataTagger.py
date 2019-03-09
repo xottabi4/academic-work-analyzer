@@ -5,8 +5,8 @@ from db.DbUtils import ABSTRACT_DOCUMENT, createTasks, TASKS_DOCUMENT
 from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 
 
-def tagSentences(regexExpression, updateExisting=False):
-    taskAbstracts = regexDatabase.find({ABSTRACT_DOCUMENT: {"$regex": regexExpression}})
+def tagSentences(updateExisting=False):
+    taskAbstracts = regexDatabase.find({ABSTRACT_DOCUMENT: {"$regex": "uzdevumi:"}})
 
     for record in taskAbstracts:
         if TASKS_DOCUMENT in record:
@@ -51,6 +51,7 @@ def clearConsole():
     print('\n' * 25)
     # os.system('cls' if os.name == 'nt' else 'clear')
 
+
 # Sentence unable to detect
 # Pētījumam izvirzīti trīs darba uzdevumi: - noskaidrot, kādus profesionāļus laikraksti aicina izteikties par politisko komunikāciju (ko laikraksti nodēvē par politiskās komunikācijas ekspertiem); - noskaidrot, kāds ir politiskās komunikācijas diskurss ekspertu vēstījumos, - konstatēt vai politiskās komunikācijas diskurss ekspertu vēstījumos satur racionalitātes pazīmes.
 # Bakalaura darba mērķis ir pamatojoties uz mārketinga stratēģijas plānošanas teorētiskajām atziņām un uzņēmuma “ Profs Latvija” mārketinga vides analīzi, izstrādāt priekšlikumus uznēmuma mārketinga stratēģijas pilnveidošanai Bakalaura darba uzdevumi: 1.  izskatīt mārketinga stratēģijas plānošanas teorētiskos aspektus; 2.  izanalizēt stratēģijas izvēles modeļus; 3.  izanalizēt uzņēmuma “Profs Latvija” mārketinga vides faktorus un to ietekmi uz uzņēmuma mārketinga stratēģijas izvēli; 4.  izpētīt uzņēmuma “ Profs Latvija” attīstības mērķus tuvā, vidējā un ilgā termiņā; 5.  izstrādāt priekšlikumus uznēmuma mārketinga stratēģijas pilnveidošanai.
@@ -63,4 +64,4 @@ def clearConsole():
 # Lai sasniegtu darba mērķi, tika izvirzīti vairāki uzdevumi: 1.  raksturot valūtas sistēmas attīstības posmi un tas pakāpeniskas izmaiņas;  2.  raksturot Monetārās sistēmas attistību; 3.  izpētīt eiro ieviešanas Latvijā riskus un iespējas; 4.  izdarīt secinājumus par Latvijas gatavību eiro ieviešanai un izvirzīt priekšlikumus Darbs sastāv no trīm nodaļām, secinājumiem un priekšlikumiem, kā arī izmantotās literatūras saraksta.
 
 if __name__ == '__main__':
-    tagSentences("uzdevumi:")
+    tagSentences()

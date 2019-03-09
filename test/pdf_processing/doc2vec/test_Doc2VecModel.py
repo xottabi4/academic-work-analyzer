@@ -11,7 +11,7 @@ from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 
 class Doc2VecModelTest(TestCase):
-    version = "11"
+    version = "16"
     model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
     logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
 

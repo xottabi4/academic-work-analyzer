@@ -7,6 +7,8 @@ from nltk.corpus import stopwords
 from definitions import stopwordsStoragePath
 from pdf_processing.utils.FileUtils import readTextFileLines
 
+SKAITLIS = "SKAITLIS"
+
 nltk.download('stopwords')
 
 STRING_PUNCTUATION = string.punctuation + "–„”“"
@@ -22,7 +24,14 @@ _stopWords.update(_latvianStopWords)
 
 def removeCommonWordsAndTokenize(sentence):
     rawSentence = strip_formatting(sentence)
-    return tokenize(rawSentence)
+    words = tokenize(rawSentence)
+    return processWords(words)
+
+
+def processWords(words):
+    words = substituteNumbers(words)
+    words = removeWordsWithLessThenTwoChars(words)
+    return list(words)
 
 
 def tokenize(rawSentence):
@@ -37,3 +46,29 @@ def strip_formatting(sentence):
     return sentence \
         .translate(str.maketrans('', '', STRING_PUNCTUATION)) \
         .lower()
+
+
+def substituteNumbers(words):
+    for word in words:
+        if isNumber(word):
+            yield SKAITLIS
+        else:
+            yield word
+
+
+def removeWordsWithLessThenTwoChars(words):
+    for word in words:
+        if len(word) > 1:
+            yield word
+
+
+def isNumber(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+if __name__ == '__main__':
+    print(removeCommonWordsAndTokenize("9 šis teikums saSTāv no burtiem a b c 33333333 "))

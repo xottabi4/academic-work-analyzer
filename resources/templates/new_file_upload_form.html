@@ -16,36 +16,79 @@
 <body>
 
 <div class="container">
-    <!--<h1>Upload new File</h1>-->
     <div class="col-md-6 col-md-offset-3">
 
+        <div class="file-upload">
+            <h1>Upload new File</h1>
 
-        <h1>Upload new File</h1>
-
-        {% if errorMessage %}
-        <div class="alert alert-danger">
-            <strong>Error!</strong> {{ errorMessage }}
-        </div>
-        <!--<p>Error: {{ errorMessage }}</p>-->
-        {% endif %}
-
-        <form method=post enctype=multipart/form-data>
-            <div class="form-group">
-                <input type="file" name=file class="form-control-file" id="exampleFormControlFile1">
-                <br>
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-success btn-lg">Upload</button>
-                </div>
+            {% if errorMessage %}
+            <div class="alert alert-danger">
+                <strong>Error!</strong> {{ errorMessage }}
             </div>
-        </form>
+            <!--<p>Error: {{ errorMessage }}</p>-->
+            {% endif %}
+
+            <form method=post enctype=multipart/form-data>
+                <div class="form-group">
+                    <input type="file" name=file class="form-control-file" id="exampleFormControlFile1">
+                    <br>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-success btn-lg">Upload</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="text-upload">
+            <h1>Upload text</h1>
+
+            <div class="form-group">
+                <label for="text-area">Text to analyze</label>
+                <textarea class="form-control" id="text-area" rows="3"></textarea>
+                <button id="upload-text" type="button" class="btn btn-success btn-lg">Analyze</button>
+            </div>
+
+            <h3>Result:</h3>
+            <textarea id="text-type-response" class="form-control" rows="15" style="resize: none" readonly>{% if response %}File name: {{fileName}}
+{{ response }}{% endif %}</textarea>
+
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+
+                    $("#upload-text").click(
+                        function () {
+                            var text = $('textarea#text-area').val();
+                            if (text === '') {
+                                alert("EMPTY!!!")
+                            } else {
+                                testAjax(text, function (output) {
+                                    var jsonObject = JSON.parse(output)
+                                    $('#text-type-response').text(JSON.stringify(jsonObject, undefined, 2))
+                                });
+                            }
+                        }
+                    );
 
 
+                    function testAjax(text, handleData) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "upload/text",
+                            data: {
+                                'text': text
+                            },
+                            success: function (data) {
+                                handleData(data);
+                            }
+                        });
+                    }
+                });
 
-        {% if response %}
-        <p>File name: {{fileName}}</p>
-        <p>{{ response }}</p>
-        {% endif %}
 
+            </script>
+        </div>
     </div>
 
 </div>

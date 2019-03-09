@@ -5,7 +5,7 @@ from flask import request, Flask, render_template, flash, redirect, url_for, get
 from werkzeug.exceptions import HTTPException
 
 from definitions import resourcesStoragePath
-from ui.AcademicWorkProcessor import processAcademicWorkFile
+from ui.AcademicWorkProcessor import processAcademicWorkFile, extractDataFromAbstract
 
 ALLOWED_EXTENSIONS = {'pdf'}
 UPLOAD_FOLDER = os.path.join(resourcesStoragePath, "downloads")
@@ -53,14 +53,23 @@ def upload_file():
     return render_template("new_file_upload_form.html", errorMessage=errorMessage, response=jsonData, fileName=fileName)
 
 
+@app.route('/upload/text', methods=['POST'])
+def upload_text():
+    receivedText = request.form["text"]
+    if not receivedText:
+        return "RECEIVED EMPTY REQUEST!!!"
+    else:
+        processedData = extractDataFromAbstract(receivedText)
+        return json.dumps(processedData, ensure_ascii=False, sort_keys=False, indent=2)
+
+
 @app.errorhandler(HTTPException)
 def all_exception_handler(error):
     if error:
         errorMesage = "You got error {}!".format(error.code)
     else:
         errorMesage = None
-    return render_template("error_page.html", error=errorMesage,
-        homePage=url_for('upload_file'))
+    return render_template("error_page.html", error=errorMesage, homePage=url_for('upload_file'))
 
 
 @app.errorhandler(413)

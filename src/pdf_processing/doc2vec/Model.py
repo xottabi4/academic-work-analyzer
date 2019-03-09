@@ -1,6 +1,7 @@
 from __future__ import division
 
 import multiprocessing
+import os
 import time
 from random import shuffle
 
@@ -11,6 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
 from db.Database import trainDatabase, testDatabase
+from definitions import doc2vecStoragePath
 
 
 def train(trainData, modelName):
@@ -20,12 +22,60 @@ def train(trainData, modelName):
     cores = multiprocessing.cpu_count()
     assert gensim.models.doc2vec.FAST_VERSION > -1, "This will be painfully slow otherwise"
 
-    model = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=5, sample=0, epochs=100, window=15, workers=cores)
+    # model 15
+    model = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=0, epochs=100, window=15,
+        workers=cores)
+
+    # CosDistance results:
+    # 269
+    # Total wrong sentences clasified: 52
+    # Error (%): 19.33085501858736
+    # Correct : 0.8066914498141264
+    # LogisticRegression results:
+    # Testing accuracy 0.8736059479553904
+    # Testing F1 score: 0.8605166403317085
+
+    # model 16
+    # model = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=1, sample=0, epochs=100, window=15,
+    #     workers=cores)
+
+    # CosDistance results:
+    # 269
+    # Total wrong sentences clasified: 64
+    # Error (%): 23.79182156133829
+    # Correct : 0.7620817843866171
+    # LogisticRegression results:
+    # Testing accuracy 0.8401486988847584
+    # Testing F1 score: 0.8178348619998215
+
+    # model 17
+    # model = Doc2Vec(dm=1, dm_concat=1, vector_size=300, negative=5, hs=0, min_count=1, sample=1e-5, epochs=100,
+    #     window=15, workers=cores)
+    # CosDistance results:
+    # 269
+    # Total wrong sentences clasified: 87
+    # Error (%): 32.342007434944236
+    # Correct : 0.6765799256505576
+    # LogisticRegression results:
+    # Testing accuracy 0.724907063197026
+    # Testing F1 score: 0.7097566498542067
+
+
+    # model 18
+    # model = Doc2Vec(dm=1, dm_concat=1, vector_size=300, negative=5, hs=0, min_count=2, sample=1e-5, epochs=100,
+    #     window=15, workers=cores)
+    # CosDistance results:
+    # 269
+    # Total wrong sentences clasified: 73
+    # Error (%): 27.137546468401485
+    # Correct : 0.7286245353159851
+    # LogisticRegression results:
+    # Testing accuracy 0.758364312267658
+    # Testing F1 score: 0.7257281811575611
 
     model.build_vocab(alldocs)
     doc_list = alldocs[:]
     shuffle(doc_list)
-    print(len(doc_list))
 
     print("Training %s" % model)
 
@@ -103,15 +153,17 @@ def testLogisticRegression(testDatabase, modelName, logRegParamsName):
 
 def main(version, trainModel=True):
     modelName = "d2v.model" + version
+    modelFullPath = os.path.join(doc2vecStoragePath, modelName)
     if trainModel:
-        train(trainDatabase, modelName)
-    testModelUsingCosDistance(testDatabase, modelName)
+        train(trainDatabase, modelFullPath)
+    testModelUsingCosDistance(testDatabase, modelFullPath)
 
     logRegParamsName = "log-reg-params.model" + version
+    logRegParamsFullPath = os.path.join(doc2vecStoragePath, logRegParamsName)
     if trainModel:
-        trainLogisticRegression(trainDatabase, modelName, logRegParamsName)
-    testLogisticRegression(testDatabase, modelName, logRegParamsName)
+        trainLogisticRegression(trainDatabase, modelFullPath, logRegParamsFullPath)
+    testLogisticRegression(testDatabase, modelFullPath, logRegParamsFullPath)
 
 
 if __name__ == '__main__':
-    main("11", False)
+    main("19", True)
