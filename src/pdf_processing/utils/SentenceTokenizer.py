@@ -41,9 +41,9 @@ def createPunktPatameters():
 SENTENCE_SPLITTER = createPunktPatameters()
 
 
-def loadCustomPunkt():
-    with open(os.path.dirname(os.path.abspath(__file__)) + "/latvianPunkt.pickle", mode='rb') as fin:
+def loadCustomPunkt(punkt_pickle):
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/" + punkt_pickle, mode='rb') as fin:
         return pickle.load(fin)
 
 
-SENTENCE_SPLITTER_CUSTOM = loadCustomPunkt()
+SENTENCE_SPLITTER_CUSTOM = loadCustomPunkt("latvianPunkt.pickle")

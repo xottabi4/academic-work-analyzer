@@ -68,7 +68,3 @@ def isNumber(s):
         return True
     except ValueError:
         return False
-
-
-if __name__ == '__main__':
-    print(removeCommonWordsAndTokenize("9 šis teikums saSTāv no burtiem a b c 33333333 "))

@@ -11,7 +11,7 @@ from pdfminer.psparser import PSSyntaxError
 
 from pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
 
-otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
+# otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
 
 
 def preprocessText(pageText):
@@ -105,7 +105,6 @@ def postprocessAbstract(text):
     # in order to separate task, conclusion and result lists.
     text = text.replace(";", ". ")
 
-    # TODO check how this affects
     # This statement affects all whitespace characters (space, tab, newline, return, formfeed)
     text = " ".join(text.split())
     return text

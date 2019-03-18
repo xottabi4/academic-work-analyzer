@@ -85,11 +85,12 @@ def populatePredictionMatrix(abstractSentences):
 
 
 if __name__ == '__main__':
+    # TODO move this to unit tests
     text = "Darba mērķis ir pārbaudīt dzīves jēgu. Izpētīt rožu popularitāti. Papriecāties par miljonu. Šodien ir saulaina jauka diena. Šis ir vienkāršs stulbs teikums. Pārliecināties par drošību uz ielām. Apskatīt mašīnu plūsmu upē. Pielietot smadzenes problēmu risināšanā. Dejot uz galda. Piektdiena ir piektā diena. Es varu sarakstīt daudz stulbu teikumu. Piemēram, trīs plus trīs ir seši. Analizēt sūdu plūsmu upē. Griezt vadus datoros un citā elektronikā. Šodien man patīk analizēt cilvēku domas. Vienkāršs parasts teikums kurā ir vārds apskatīt."
     # Darba mērķis ir pārbaudīt dzīves jēgu. Izpētīt rožu popularitāti. Papriecāties par miljonu. Šodien ir saulaina jauka diena. Šis ir vienkāršs stulbs teikums. Pārliecināties par drošību uz ielām. Apskatīt mašīnu plūsmu upē. Pielietot smadzenes problēmu risināšanā. Dejot uz galda. Piektdiena ir piektā diena. Es varu sarakstīt daudz stulbu teikumu. Piemēram, trīs plus trīs ir seši. Analizēt sūdu plūsmu upē. Griezt vadus datoros un citā elektronikā. Šodien man patīk analizēt cilvēku domas. Vienkāršs parasts teikums kurā ir vārds apskatīt. Uzdevumi ir sarežģīta lieta dzīvē. Šis konkrēts uzdevums ir sarežģīts. Šie konkrētie uzdevumi ir sarežģīti.
     # text = "Atslēgvārdi: naudas plūsmas pārskats, tiešā un netiešā naudas plūsmas pārskata sastādīšanas metode, pamatdarbības, ieguldīšanas darbības, finansēšanas darbības naudas plūsmas."
     #  Lielas urīna plūsmas
-
+    # kaut kāds nepazīstams random teksts.
     print(extractDataFromAbstract(text))
 
     print(len(model.wv.vocab))

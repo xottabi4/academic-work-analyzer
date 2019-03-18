@@ -1,7 +1,6 @@
 import re
 
 TABLE_OF_CONTENTS = "(Saturs|Satura rādītājs)"
-# Some strange people use Rezumējums instead of Anotācija
 ABSTRACT = "(Anotācija|Rezumējums)"
 MAX_ACCEPTABLE_NUMBER_COUNT = 50
 
@@ -10,10 +9,6 @@ class AbstractDetector:
     hasFoundAbstract = False
 
     def doesAbstractConsistOfMorePages(self, validText):
-        # about 2506 chars is full page
-        #  sometimes people insert this as last statemet (no dot at the end)
-        # Atslēgvārdi: nanokompozīts, mehāniskā uzvedība, mitruma ietekme, starpfāžu slānis
-
         sentenceEndWithDot = "." == validText[-1]
         pageIsFullOfText = len(validText) >= 2500
         isKeywordsSectionLast = re.search("Atslēgvārdi:", validText[-100:], re.IGNORECASE)

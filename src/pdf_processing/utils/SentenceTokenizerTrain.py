@@ -10,7 +10,7 @@ from db.DbUtils import ABSTRACT_DOCUMENT
 def trainSentenceTokenizer():
     """
     Method trains custom sentence tokenizer using punk.
-    At the moment it preforms worse then plain englihs one (most likely due to not that much data)
+    At the moment it preforms worse then plain english one (most likely due to not that much data)
     """
     from properties import DATABASE_NAME, MONGODB_CONNECTION
 
@@ -20,14 +20,14 @@ def trainSentenceTokenizer():
     text = ""
     for record in collection.find({ABSTRACT_DOCUMENT: {"$ne": None}}):
         text += record[ABSTRACT_DOCUMENT] + " "
-    # print(text[0:100])
-    # text =
 
-    punkt = PunktTrainer()
-    punkt.train(text)
+    trainer = PunktTrainer()
+    trainer.INCLUDE_ALL_COLLOCS = True
+    trainer.INCLUDE_ABBREV_COLLOCS = True
+    trainer.train(text)
 
-    model = nltk.PunktSentenceTokenizer(punkt.get_params())
-    with open("latvianPunkt.pickle", mode='wb') as fout:
+    model = nltk.PunktSentenceTokenizer(trainer.get_params())
+    with open("latvianPunkt2.pickle", mode='wb') as fout:
         pickle.dump(model, fout, protocol=pickle.HIGHEST_PROTOCOL)
 
 
