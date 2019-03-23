@@ -113,4 +113,3 @@ src/crawlers/properties.py
 /src/pdf_processing/doc2vec/results/
 /src/pdf_processing/doc2vec/data/
 /resources/doc2vecModels/bad/
-!/src/crawlers/properties.py
