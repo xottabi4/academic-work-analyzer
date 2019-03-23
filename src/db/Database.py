@@ -1,6 +1,6 @@
 import pymongo
 
-from properties import MONGODB_CONNECTION, DATABASE_NAME, COLLECTION_NAME
+from db.db_properties import MONGODB_CONNECTION, DATABASE_NAME, COLLECTION_NAME
 
 database = pymongo.MongoClient(MONGODB_CONNECTION)[DATABASE_NAME]
 

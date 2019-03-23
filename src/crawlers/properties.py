@@ -1,0 +1,3 @@
+# Crawler properties
+laisUsername = ""
+laisPassword = ""

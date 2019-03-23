@@ -1,9 +1,9 @@
 import pickle
 
 import nltk
-import pymongo
 from nltk.tokenize.punkt import PunktTrainer
 
+from db.Database import database
 from db.DbUtils import ABSTRACT_DOCUMENT
 
 
@@ -12,9 +12,6 @@ def trainSentenceTokenizer():
     Method trains custom sentence tokenizer using punk.
     At the moment it preforms worse then plain english one (most likely due to not that much data)
     """
-    from properties import DATABASE_NAME, MONGODB_CONNECTION
-
-    database = pymongo.MongoClient(MONGODB_CONNECTION)[DATABASE_NAME]
     collection = database["crawled-data"]
 
     text = ""

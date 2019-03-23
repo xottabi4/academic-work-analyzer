@@ -9,7 +9,7 @@ from PyPDF2.utils import PdfReadError
 from bs4 import BeautifulSoup
 
 import definitions
-import properties
+from crawlers import properties
 
 
 class LuDatabaseCrawler:
