@@ -7,8 +7,8 @@ from gensim.models import Doc2Vec
 from sklearn.externals import joblib
 
 from definitions import doc2vecStoragePath
-from pdf_processing.utils.FileUtils import saveContentToFile
-from pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
+from src.pdf_processing.utils.FileUtils import saveContentToFile
+from src.pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
 
 version = "11"
 model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))

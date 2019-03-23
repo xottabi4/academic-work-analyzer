@@ -5,7 +5,7 @@ from flask import request, Flask, render_template, flash, redirect, url_for, get
 from werkzeug.exceptions import HTTPException
 
 from definitions import resourcesStoragePath
-from ui.AcademicWorkProcessor import processAcademicWorkFile, extractDataFromAbstract
+from src.ui.AcademicWorkProcessor import processAcademicWorkFile, extractDataFromAbstract
 
 ALLOWED_EXTENSIONS = {'pdf'}
 UPLOAD_FOLDER = os.path.join(resourcesStoragePath, "downloads")

@@ -4,11 +4,11 @@ import PyPDF2
 from requests.exceptions import SSLError
 
 import definitions
-from crawlers.LuDatabase import LuDatabaseCrawler
-from db.Database import regexDatabase
-from db.DbUtils import createRecord, ABSTRACT_DOCUMENT, createPurpose, ID_DOCUMENT
-from pdf_processing.rule_based.AbstractExtractor import extractAbstract
-from pdf_processing.rule_based.PurposeExtractor import extractPurpose
+from src.crawlers.LuDatabase import LuDatabaseCrawler
+from src.db.Database import regexDatabase
+from src.db.DbUtils import createRecord, ABSTRACT_DOCUMENT, createPurpose, ID_DOCUMENT
+from src.pdf_processing.rule_based.AbstractExtractor import extractAbstract
+from src.pdf_processing.rule_based.PurposeExtractor import extractPurpose
 
 
 def crawlForData(collection):

@@ -1,6 +1,6 @@
 import re
 
-from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
+from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 
 
 def isPurposeSentence(sentence):

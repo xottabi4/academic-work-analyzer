@@ -5,10 +5,10 @@ from gensim.models import Doc2Vec
 from sklearn.externals import joblib
 
 from definitions import doc2vecStoragePath
-from pdf_processing.doc2vec.Label import Label
-from pdf_processing.rule_based.AbstractExtractor import extractAbstract, extractAbstractUsingFile
-from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
-from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.doc2vec.Label import Label
+from src.pdf_processing.rule_based.AbstractExtractor import extractAbstract, extractAbstractUsingFile
+from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
+from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 version = "19"
 model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))

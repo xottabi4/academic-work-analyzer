@@ -3,7 +3,7 @@ import pickle
 import nltk
 
 from definitions import abbreviationsStoragePath
-from pdf_processing.utils.FileUtils import readTextFileLines
+from src.pdf_processing.utils.FileUtils import readTextFileLines
 
 nltk.download('punkt')
 

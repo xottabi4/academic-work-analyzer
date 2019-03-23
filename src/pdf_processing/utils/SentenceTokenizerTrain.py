@@ -3,8 +3,8 @@ import pickle
 import nltk
 from nltk.tokenize.punkt import PunktTrainer
 
-from db.Database import database
-from db.DbUtils import ABSTRACT_DOCUMENT
+from src.db.Database import database
+from src.db.DbUtils import ABSTRACT_DOCUMENT
 
 
 def trainSentenceTokenizer():

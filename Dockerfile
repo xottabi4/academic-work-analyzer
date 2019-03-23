@@ -16,7 +16,7 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install -r requirements.txt
 # We copy the rest of the codebase into the image
-COPY src .
+COPY src ./src
 COPY resources ./resources
 COPY main.py .
 COPY app.ini .

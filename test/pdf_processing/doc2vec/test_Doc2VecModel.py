@@ -6,8 +6,8 @@ from gensim.models import Doc2Vec
 from sklearn.externals import joblib
 
 from definitions import doc2vecStoragePath
-from pdf_processing.doc2vec.Label import Label
-from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.doc2vec.Label import Label
+from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 
 class Doc2VecModelTest(TestCase):

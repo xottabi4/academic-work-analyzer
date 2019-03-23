@@ -9,7 +9,7 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.psparser import PSSyntaxError
 
-from pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
+from src.pdf_processing.rule_based.AbstractDetector import AbstractDetector, ABSTRACT
 
 # otherSymbols = """"#$%&'()*+,-/:<=>@[\]^_`{|}~"""
 

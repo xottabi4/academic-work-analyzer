@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import nltk
 
-from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER, loadCustomPunkt
+from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER, loadCustomPunkt
 
 
 class SentenceTokenizerTest(TestCase):

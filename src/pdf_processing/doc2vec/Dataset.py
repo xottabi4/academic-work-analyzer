@@ -1,10 +1,10 @@
 from random import choice
 
-from db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT
-from db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase, database
-from pdf_processing.doc2vec.Label import Label
-from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
-from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize, processWords
+from src.db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT
+from src.db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase, database
+from src.pdf_processing.doc2vec.Label import Label
+from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
+from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize, processWords
 
 
 def prepareDatasets():

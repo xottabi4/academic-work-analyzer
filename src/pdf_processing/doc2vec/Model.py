@@ -11,7 +11,7 @@ from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
-from db.Database import trainDatabase, testDatabase
+from src.db.Database import trainDatabase, testDatabase
 from definitions import doc2vecStoragePath
 
 

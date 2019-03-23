@@ -1,8 +1,8 @@
 import sys
 
-from db.Database import regexDatabase
-from db.DbUtils import ABSTRACT_DOCUMENT, createTasks, TASKS_DOCUMENT
-from pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
+from src.db.Database import regexDatabase
+from src.db.DbUtils import ABSTRACT_DOCUMENT, createTasks, TASKS_DOCUMENT
+from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 
 
 def tagSentences(updateExisting=False):

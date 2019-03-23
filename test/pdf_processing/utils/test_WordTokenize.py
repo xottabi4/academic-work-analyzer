@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 
 class WordTokenizeTest(TestCase):

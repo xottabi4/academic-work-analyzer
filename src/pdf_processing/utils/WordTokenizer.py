@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import stopwords
 
 from definitions import stopwordsStoragePath
-from pdf_processing.utils.FileUtils import readTextFileLines
+from src.pdf_processing.utils.FileUtils import readTextFileLines
 
 SKAITLIS = "SKAITLIS"
 
