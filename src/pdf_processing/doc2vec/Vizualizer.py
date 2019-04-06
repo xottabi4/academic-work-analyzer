@@ -10,7 +10,7 @@ from definitions import doc2vecStoragePath
 from src.pdf_processing.utils.FileUtils import saveContentToFile
 from src.pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
 
-version = "11"
+version = "20"
 model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
 logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
 
@@ -54,7 +54,8 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
         # The wrapper function that returns FastText predictions in scikit-learn format
         classifier_fn=classify,
         # How many labels to explain. We just want to explain the single most likely label.
-        top_labels=1,
+        # labels=tuple(logreg.classes_),
+        top_labels=len(logreg.classes_),
         # How many words in our sentence to include in the explanation. You can try different values.
         num_features=100,
         num_samples=10000
@@ -68,6 +69,6 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
 
 
 if __name__ == '__main__':
-    testSentence = "Mērķis ir izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"
-    output_filename = os.path.join(doc2vecStoragePath, "model11_explanation.html")
+    testSentence = "Vienkāršs parasts teikums kurā ir vārds apskatīt."
+    output_filename = os.path.join(doc2vecStoragePath, "model_{}_explanation.html".format(version))
     createModelExplanation(testSentence, output_filename)
