@@ -5,15 +5,15 @@ import numpy
 from gensim.models import Doc2Vec
 from sklearn.externals import joblib
 
-from definitions import doc2vecStoragePath
-from src.pdf_processing.doc2vec.Label import Label
+from definitions import modelStoragePath
+from src.pdf_processing.vector_based.Label import Label
 from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
 
 
 class Doc2VecModelTest(TestCase):
     version = "20"
-    model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
-    logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
+    model = Doc2Vec.load(os.path.join(modelStoragePath, "d2v.model" + version))
+    logreg = joblib.load(os.path.join(modelStoragePath, "log-reg-params.model" + version))
 
     def test_manual_sentence_1(self):
         self.assertSentencePrediction(Label.PURPOSE.value,

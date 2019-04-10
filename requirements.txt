@@ -13,7 +13,7 @@ dask==1.0.0
 decorator==4.3.0
 docutils==0.14
 Flask==1.0.2
-gensim==3.6.0
+gensim==3.7.1
 idna==2.7
 itsdangerous==1.1.0
 Jinja2==2.10

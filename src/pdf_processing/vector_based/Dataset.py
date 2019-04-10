@@ -2,7 +2,7 @@ from random import choice
 
 from src.db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT
 from src.db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase, database
-from src.pdf_processing.doc2vec.Label import Label
+from src.pdf_processing.vector_based.Label import Label
 from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize, processWords
 
@@ -12,9 +12,43 @@ def prepareDatasets():
     createTrainTestData(allDataDatabase, trainDatabase, testDatabase)
 
 
+def postCleanData(allDataDatabase):
+    # {sentence: { $size: 0}}
+    # { $where: "sentence.length < 1"} looks like not that good
+    # {'sentence.1': {$exists: false}}
+
+    # finds sentences with less than 2 words
+    myquery = {"sentence.1": {"$exists": False}}
+    x = allDataDatabase.delete_many(myquery)
+    print(x.deleted_count, " documents deleted.")
+
+
+def balanceDatabaseLabels(allDataDatabase):
+    otherLabelCount = allDataDatabase.count_documents({"token": Label.OTHER.value})
+    purposeLabelCount = allDataDatabase.count_documents({"token": Label.PURPOSE.value})
+    if otherLabelCount > purposeLabelCount:
+        amountToDelete = otherLabelCount - purposeLabelCount
+        documentToDelete = allDataDatabase.aggregate(
+            [{'$sample': {'size': amountToDelete}}, {"$match": {"token": Label.OTHER.value}}])
+        x = allDataDatabase.delete_many(documentToDelete)
+        print(x.deleted_count, " documents deleted.")
+        for doc in documentToDelete:
+            print(doc)
+
+
 def createAllValidData(regexDatabase, allDataDatabase):
     allData = regexDatabase.find({ABSTRACT_DOCUMENT: {"$ne": None}})
     createDataSet(allData, allDataDatabase)
+    postCleanData(allDataDatabase)
+    showDatabaseLabelStats(allDataDatabase)
+    # TODO check is balancing needed for fasttext
+    # balanceDatabaseLabels(allDataDatabase)
+
+
+def showDatabaseLabelStats(allDataDatabase):
+    labels = [e.value for e in Label]
+    for label in labels:
+        print("Label {}, count {}".format(label, allDataDatabase.count_documents({"token": label})))
 
 
 def createTrainTestData(allDataDatabase, trainDatabase, testDatabase):
@@ -35,7 +69,7 @@ def createTrainTestData(allDataDatabase, trainDatabase, testDatabase):
 
 def trainTestSplit(allDataDatabase, label, testPercent=0.25):
     howManyNumbers = int(round(testPercent * allDataDatabase.count_documents({"token": label})))
-    print("Label: {}, total count: {}".format(label, howManyNumbers))
+    print("Label: {}, sentence count: {}".format(label, howManyNumbers))
     return allDataDatabase.find({"token": label})[howManyNumbers:], allDataDatabase.find({"token": label})[
     :howManyNumbers]
 
@@ -87,6 +121,3 @@ if __name__ == '__main__':
 
     # updateDataset()
     # createTrainTestData(allDataDatabase, trainDatabase, testDatabase)
-
-# check contents in mongoDB
-#     {sentence: {$in: ["1"]}}

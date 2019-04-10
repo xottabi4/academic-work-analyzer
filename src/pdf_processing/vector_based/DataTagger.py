@@ -1,19 +1,19 @@
 import sys
 
 from src.db.Database import regexDatabase
-from src.db.DbUtils import ABSTRACT_DOCUMENT, createTasks, TASKS_DOCUMENT
+from src.db.DbUtils import ABSTRACT_DOCUMENT, TASKS_DOCUMENT, createRecord, RESULTS_DOCUMENT, CONCLUSIONS_DOCUMENT
 from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 
 
-def tagSentences(updateExisting=False):
-    taskAbstracts = regexDatabase.find({ABSTRACT_DOCUMENT: {"$regex": "uzdevumi:"}})
+def tagSentences(documentType, regexp, updateExisting=False):
+    taskAbstracts = regexDatabase.find({ABSTRACT_DOCUMENT: {"$regex": regexp}})
 
     for record in taskAbstracts:
-        if TASKS_DOCUMENT in record:
+        if documentType in record:
             print("already present!")
             if not updateExisting:
                 continue
-        record.update(createTasks(list()))
+        record.update(createRecord(documentType, list()))
         taskAbstractProcessed = record[ABSTRACT_DOCUMENT]
         abstractSentences = SENTENCE_SPLITTER.tokenize(taskAbstractProcessed)
         for idx, abstractSentence in enumerate(abstractSentences):
@@ -23,7 +23,7 @@ def tagSentences(updateExisting=False):
             if choice is None:
                 break
             if choice:
-                presentTasks = record[TASKS_DOCUMENT]
+                presentTasks = record[documentType]
                 presentTasks.append([idx, abstractSentence.strip()])
                 regexDatabase.save(record)
 
@@ -64,4 +64,17 @@ def clearConsole():
 # Lai sasniegtu darba mērķi, tika izvirzīti vairāki uzdevumi: 1.  raksturot valūtas sistēmas attīstības posmi un tas pakāpeniskas izmaiņas;  2.  raksturot Monetārās sistēmas attistību; 3.  izpētīt eiro ieviešanas Latvijā riskus un iespējas; 4.  izdarīt secinājumus par Latvijas gatavību eiro ieviešanai un izvirzīt priekšlikumus Darbs sastāv no trīm nodaļām, secinājumiem un priekšlikumiem, kā arī izmantotās literatūras saraksta.
 
 if __name__ == '__main__':
-    tagSentences()
+    # tagSentences(TASKS_DOCUMENT, regexp="uzdevumi:")
+
+    # Maģistra darba autore nonāk pie šādam pamatatziņām, ka riska grupas ir visas tās grupas, kas pēc savas labklājības vai veselības stāvokļa un dzīves veida atrodas kritiskā situācijā un var būt bīstamas pašas sev vai citiem sabiedrības locekļiem.
+    # Analīzes rezultāti,
+    # Pētījuma rezultātā ir secināts, ka darba hipotēze ir apstiprinājusies, etniskie faktori būtiski ietekmē vēlēšanu rezultātus Tallinā, Viļņā un Rīgā.
+    tagSentences(RESULTS_DOCUMENT, regexp="rezultāti:")
+
+    # Darba rezultāti ir parādījuši,
+    # Pētījuma rezultāti liecina
+    # Iegūtie rezultāti norāda uz to, ka viennozīmīga Atmodas procesu interpretācija nav iespējama.
+    # Pētījuma rezultātā noskaidrots,
+    # tagSentences(CONCLUSIONS_DOCUMENT, regexp="secinājumi:")
+
+    # {abstract: {"$regex": "secinājumi:"}}

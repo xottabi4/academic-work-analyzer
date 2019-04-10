@@ -6,13 +6,13 @@ import numpy as np
 from gensim.models import Doc2Vec
 from sklearn.externals import joblib
 
-from definitions import doc2vecStoragePath
+from definitions import modelStoragePath
 from src.pdf_processing.utils.FileUtils import saveContentToFile
 from src.pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
 
 version = "20"
-model = Doc2Vec.load(os.path.join(doc2vecStoragePath, "d2v.model" + version))
-logreg = joblib.load(os.path.join(doc2vecStoragePath, "log-reg-params.model" + version))
+model = Doc2Vec.load(os.path.join(modelStoragePath, "d2v.model" + version))
+logreg = joblib.load(os.path.join(modelStoragePath, "log-reg-params.model" + version))
 
 
 def predict(model, logreg, x):
@@ -70,5 +70,5 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
 
 if __name__ == '__main__':
     testSentence = "Vienkāršs parasts teikums kurā ir vārds apskatīt."
-    output_filename = os.path.join(doc2vecStoragePath, "model_{}_explanation.html".format(version))
+    output_filename = os.path.join(modelStoragePath, "model_{}_explanation.html".format(version))
     createModelExplanation(testSentence, output_filename)
