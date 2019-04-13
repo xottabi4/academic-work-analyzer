@@ -1,10 +1,10 @@
 from random import choice
 
-from src.db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT
 from src.db.Database import regexDatabase, allDataDatabase, trainDatabase, testDatabase, database
-from src.pdf_processing.vector_based.Label import Label
+from src.db.DbUtils import ABSTRACT_DOCUMENT, PURPOSE_DOCUMENT, TASKS_DOCUMENT, RESULTS_DOCUMENT, CONCLUSIONS_DOCUMENT
 from src.pdf_processing.utils.SentenceTokenizer import SENTENCE_SPLITTER
 from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize, processWords
+from src.pdf_processing.vector_based.Label import Label
 
 
 def prepareDatasets():
@@ -29,20 +29,22 @@ def balanceDatabaseLabels(allDataDatabase):
     if otherLabelCount > purposeLabelCount:
         amountToDelete = otherLabelCount - purposeLabelCount
         documentToDelete = allDataDatabase.aggregate(
-            [{'$sample': {'size': amountToDelete}}, {"$match": {"token": Label.OTHER.value}}])
-        x = allDataDatabase.delete_many(documentToDelete)
+            [{'$sample': {'size': amountToDelete}}, {"$match": {"token": Label.OTHER.value}}, {"$project": {"_id": 1}}]
+        )
+        documentToDelete = list(documentToDelete)
+        documentToDelete = [i["_id"] for i in documentToDelete]
+
+        x = allDataDatabase.delete_many({"_id": {"$in": documentToDelete}})
         print(x.deleted_count, " documents deleted.")
-        for doc in documentToDelete:
-            print(doc)
 
 
 def createAllValidData(regexDatabase, allDataDatabase):
     allData = regexDatabase.find({ABSTRACT_DOCUMENT: {"$ne": None}})
     createDataSet(allData, allDataDatabase)
     postCleanData(allDataDatabase)
-    showDatabaseLabelStats(allDataDatabase)
     # TODO check is balancing needed for fasttext
-    # balanceDatabaseLabels(allDataDatabase)
+    balanceDatabaseLabels(allDataDatabase)
+    showDatabaseLabelStats(allDataDatabase)
 
 
 def showDatabaseLabelStats(allDataDatabase):
@@ -87,14 +89,13 @@ def createDataSet(trainData, trainDatabase, useOtherLabel=True):
                 sentenceSplitted = removeCommonWordsAndTokenize(sentence)
                 trainDatabase.save({"token": [Label.PURPOSE.value], "sentence": sentenceSplitted})
 
-        if TASKS_DOCUMENT in record:
-            tasks = record[TASKS_DOCUMENT]
-            for task in tasks:
-                sentenceId = task[0]
-                abstractSentenceIndicesToDelete.append(sentenceId)
-                sentence = task[1]
-                sentenceSplitted = removeCommonWordsAndTokenize(sentence)
-                trainDatabase.save({"token": [Label.TASKS.value], "sentence": sentenceSplitted})
+        populateRecords(abstractSentenceIndicesToDelete, record, trainDatabase, recordType=TASKS_DOCUMENT,
+            label=Label.TASKS)
+        populateRecords(abstractSentenceIndicesToDelete, record, trainDatabase, recordType=CONCLUSIONS_DOCUMENT,
+            label=Label.CONCLUSIONS)
+        populateRecords(abstractSentenceIndicesToDelete, record, trainDatabase, recordType=RESULTS_DOCUMENT,
+            label=Label.RESULTS)
+
         if useOtherLabel:
             abstractSentenceIndicesToDelete.sort(reverse=True)
             for indice in abstractSentenceIndicesToDelete:
@@ -108,6 +109,17 @@ def createDataSet(trainData, trainDatabase, useOtherLabel=True):
                 print("Empty list")
 
 
+def populateRecords(abstractSentenceIndicesToDelete, record, trainDatabase, recordType, label):
+    if recordType in record:
+        tasks = record[recordType]
+        for task in tasks:
+            sentenceId = task[0]
+            abstractSentenceIndicesToDelete.append(sentenceId)
+            sentence = task[1]
+            sentenceSplitted = removeCommonWordsAndTokenize(sentence)
+            trainDatabase.save({"token": [label.value], "sentence": sentenceSplitted})
+
+
 def updateDataset():
     for record in allDataDatabase.find():
         processedWords = processWords(record["sentence"])
@@ -118,6 +130,7 @@ def updateDataset():
 
 if __name__ == '__main__':
     prepareDatasets()
-
+    # balanceDatabaseLabels(allDataDatabase)
+    # showDatabaseLabelStats(allDataDatabase)
     # updateDataset()
     # createTrainTestData(allDataDatabase, trainDatabase, testDatabase)

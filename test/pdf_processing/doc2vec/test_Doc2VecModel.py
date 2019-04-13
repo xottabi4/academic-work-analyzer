@@ -1,23 +1,20 @@
-import os
 from unittest import TestCase
 
 import numpy
-from gensim.models import Doc2Vec
-from sklearn.externals import joblib
 
-from definitions import modelStoragePath
-from src.pdf_processing.vector_based.Label import Label
 from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.vector_based.Label import Label
+from src.pdf_processing.vector_based.models.Doc2VecModel import Doc2vecModel
+from src.pdf_processing.vector_based.models.FastTextModel import FastTextModel
 
 
 class Doc2VecModelTest(TestCase):
-    version = "20"
-    model = Doc2Vec.load(os.path.join(modelStoragePath, "d2v.model" + version))
-    logreg = joblib.load(os.path.join(modelStoragePath, "log-reg-params.model" + version))
+    model = FastTextModel("1")
+    # model = Doc2vecModel("21")
 
     def test_manual_sentence_1(self):
         self.assertSentencePrediction(Label.PURPOSE.value,
-            "Mērķis Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās")
+            "Mērķis ir Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās")
 
     def test_manual_sentence_2(self):
         self.assertSentencePrediction(Label.OTHER.value,
@@ -56,10 +53,9 @@ class Doc2VecModelTest(TestCase):
             "Izpētīt biežāk lietotās metodes")
 
     def assertSentencePrediction(self, expectedOutput, input):
-        testSentence = removeCommonWordsAndTokenize(input)
-        testSentenceVector = self.model.infer_vector(testSentence)
-        y_pred = self.logreg.predict([testSentenceVector])
-        self.assertEqual(expectedOutput, y_pred[0])
+        predict_class = self.model.predictClass(input)
+        print(predict_class)
+        self.assertEqual(expectedOutput, predict_class)
 
     def manual_test(self,
             sentence="Mērķis Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"):

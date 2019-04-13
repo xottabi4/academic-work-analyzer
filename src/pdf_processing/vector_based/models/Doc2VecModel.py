@@ -28,11 +28,11 @@ class Doc2vecModel(Model):
         for record in trainData.find():
             alldocs.append(TaggedDocument(words=record['sentence'], tags=record['token']))
 
-        model = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=1e-5, epochs=100, window=15,
-            workers=cores)
+        # model = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=0, epochs=100, window=15,
+        #     workers=cores)
 
-        # model = Doc2Vec(dm=1, dm_concat=1, vector_size=300, negative=5, hs=0, min_count=1, sample=1e-5, epochs=100,
-        #     window=15, workers=cores)
+        model = Doc2Vec(dm=1, dm_concat=1, vector_size=300, negative=5, hs=0, min_count=2, sample=1e-5, epochs=100,
+            window=15, workers=cores)
 
         model.build_vocab(alldocs)
         doc_list = alldocs[:]

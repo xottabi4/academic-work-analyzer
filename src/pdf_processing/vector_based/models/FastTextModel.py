@@ -45,7 +45,8 @@ class FastTextModel(Model):
             alldocs.append(sentenceAndLabed)
 
         epochs = 50
-        model = FastText(workers=cores, size=100, window=15, min_count=1, sg=0, word_ngrams=1)
+        # model = FastText(workers=cores, size=100, window=15, min_count=1, sg=0, word_ngrams=1)
+        model = FastText(workers=cores, size=100, window=15, min_count=1, sg=1, word_ngrams=1)
         model.build_vocab(alldocs)
 
         if addLabelsToVocabulary:

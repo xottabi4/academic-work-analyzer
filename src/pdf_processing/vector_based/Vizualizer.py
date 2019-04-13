@@ -3,21 +3,28 @@ import os
 import lime.lime_text
 import numpy
 import numpy as np
-from gensim.models import Doc2Vec
-from sklearn.externals import joblib
 
 from definitions import modelStoragePath
 from src.pdf_processing.utils.FileUtils import saveContentToFile
-from src.pdf_processing.utils.WordTokenizer import tokenize, strip_formatting
+from src.pdf_processing.utils.WordTokenizer import tokenize, strip_formatting, removeCommonWordsAndTokenize
 
-version = "20"
-model = Doc2Vec.load(os.path.join(modelStoragePath, "d2v.model" + version))
-logreg = joblib.load(os.path.join(modelStoragePath, "log-reg-params.model" + version))
+from src.pdf_processing.vector_based.models.Doc2VecModel import Doc2vecModel
+from src.pdf_processing.vector_based.models.FastTextModel import FastTextModel
+
+# model = Doc2vecModel("21")
+model = FastTextModel("1")
 
 
-def predict(model, logreg, x):
-    testSentenceVector = model.infer_vector(tokenize(x))
-    probabilities = logreg.predict_proba([testSentenceVector])
+def predict(x):
+    # old style
+    # testSentenceVector = model.infer_vector(tokenize(x))
+    # probabilities = logreg.predict_proba([testSentenceVector])
+
+    print(x)
+    testSentenceVector = model.calculateSentenceVector(removeCommonWordsAndTokenize(x))
+    probabilities = model.logreg.predict_proba([testSentenceVector])
+
+    # doc2VecModel.predictClass()
     print(x)
     print(probabilities)
     return np.squeeze(np.asarray(numpy.round(probabilities, 3)))
@@ -26,7 +33,7 @@ def predict(model, logreg, x):
 def classify(data):
     result = []
     for i in data:
-        result.append(predict(model, logreg, i))
+        result.append(predict(i))
 
     result2 = np.asarray(result, dtype=np.float32)
     return result2
@@ -39,12 +46,12 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
         verbose=True,
         # We need to tell LIME how to split the string into words. We can do this
         # by giving it a function to call to split a string up the same way FastText does it.
-        split_expression=tokenize,
+        split_expression=removeCommonWordsAndTokenize,
         # Our FastText classifer uses bigrams (two-word pairs) to classify text. Setting
         # bow=False tells LIME to not assume that our classifier is based on single words only.
         bow=False,
         # To make the output pretty, tell LIME what to call each possible prediction from our model.
-        class_names=tuple(logreg.classes_)
+        class_names=tuple(model.logreg.classes_)
     )
 
     # Make a prediction and explain it!
@@ -55,7 +62,7 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
         classifier_fn=classify,
         # How many labels to explain. We just want to explain the single most likely label.
         # labels=tuple(logreg.classes_),
-        top_labels=len(logreg.classes_),
+        top_labels=len(model.logreg.classes_),
         # How many words in our sentence to include in the explanation. You can try different values.
         num_features=100,
         num_samples=10000
@@ -69,6 +76,12 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
 
 
 if __name__ == '__main__':
-    testSentence = "Vienkāršs parasts teikums kurā ir vārds apskatīt."
-    output_filename = os.path.join(modelStoragePath, "model_{}_explanation.html".format(version))
+    # testSentence = "Vienkāršs parasts teikums kurā ir vārds apskatīt."
+
+    # testSentence = "Mans mērķis ir pārņemt pasauli."
+
+    testSentence = "mērķis ir Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"
+    # testSentence="Izpētīt biežāk lietotās metodes"
+    output_filename = os.path.join(modelStoragePath,
+        "model_{}_{}_explanation.html".format(model.modelName, model.modelVersion))
     createModelExplanation(testSentence, output_filename)

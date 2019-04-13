@@ -2,5 +2,7 @@
 /resources/academicFiles/
 /src/db/
 /src/crawlers/
-/resources/doc2vecModels/bad/
 /src/pdf_processing/utils/SentenceTokenizerTrain.py
+/resources/models/bad/
+/resources/models/pretrained/
+

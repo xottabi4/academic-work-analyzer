@@ -6,4 +6,4 @@ class Label(Enum):
     OTHER = 'other_label'
     TASKS = 'tasks_label'
     CONCLUSIONS = 'conclusions_label'
-    RESULTS = 'ŗesults_label'
+    RESULTS = 'results_label'

@@ -1,11 +1,15 @@
 from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.vector_based.models.Doc2VecModel import Doc2vecModel
 from src.pdf_processing.vector_based.models.FastTextModel import FastTextModel
 
+from src.db.Database import trainDatabase, testDatabase
+
 if __name__ == '__main__':
-    # model = Doc2vecModel("20")
-    model = FastTextModel("pretrained")
-    model.train()
-    model.test()
+    model = Doc2vecModel("22")
+    # model = FastTextModel("3")
+    # model = FastTextModel("pretrained")
+    model.train(trainDatabase)
+    model.test(testDatabase)
 
     # print("*"*100)
     # model.findSimilarSentences(removeCommonWordsAndTokenize("SKAITLIS un pieci dzīves gadi"))

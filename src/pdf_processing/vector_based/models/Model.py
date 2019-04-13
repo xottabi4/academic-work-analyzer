@@ -12,7 +12,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
 from definitions import modelStoragePath
-from src.db.Database import trainDatabase, testDatabase
+from src.pdf_processing.utils.WordTokenizer import removeCommonWordsAndTokenize
+from src.pdf_processing.vector_based.Label import Label
 
 app_logger = logging.getLogger("modelTrainTest")
 app_logger.setLevel(logging.INFO)
@@ -71,17 +72,18 @@ class Model:
         app_logger.info('Testing accuracy %s' % accuracy_score(y_test, y_pred))
         app_logger.info('Testing F1 score: {}'.format(f1_score(y_test, y_pred, average='weighted')))
 
+    # {"token": Label.PURPOSE.value}
     def get_vectors(self, database):
         targets, regressors = zip(
             *[(doc["token"][0], self.calculateSentenceVector(doc["sentence"])) for doc in database.find()])
         # *[(doc["token"][0], model.wv[doc["sentence"]]) for doc in database.find()])
         return targets, regressors
 
-    def train(self):
+    def train(self, trainDatabase):
         self.trainModel(trainDatabase)
         self.trainLogisticRegression(trainDatabase)
 
-    def test(self):
+    def test(self, testDatabase):
         app_logger.info("#" * 60)
         app_logger.info("Evaluating {} model version {}".format(self.modelName, self.modelVersion))
         app_logger.info(self.model)
@@ -97,3 +99,9 @@ class Model:
 
     def calculateSentenceVector(self, sentences):
         raise NotImplementedError()
+
+    def predictClass(self, sentence):
+        testSentence = removeCommonWordsAndTokenize(sentence)
+        testSentenceVector = self.calculateSentenceVector(testSentence)
+        y_pred = self.logreg.predict([testSentenceVector])
+        return y_pred[0]
