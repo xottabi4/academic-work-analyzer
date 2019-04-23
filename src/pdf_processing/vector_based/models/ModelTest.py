@@ -5,11 +5,15 @@ from src.pdf_processing.vector_based.models.FastTextModel import FastTextModel
 from src.db.Database import trainDatabase, testDatabase
 
 if __name__ == '__main__':
-    model = Doc2vecModel("22")
-    # model = FastTextModel("3")
+    # model = Doc2vecModel("22")
+    model = FastTextModel("1")
     # model = FastTextModel("pretrained")
-    model.train(trainDatabase)
+
+    # model.train(trainDatabase)
     model.test(testDatabase)
+
+    print(model.model.wv.vocab)
+    print(len(model.model.wv.vocab))
 
     # print("*"*100)
     # model.findSimilarSentences(removeCommonWordsAndTokenize("SKAITLIS un pieci dzīves gadi"))

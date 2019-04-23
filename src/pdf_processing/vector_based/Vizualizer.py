@@ -62,7 +62,8 @@ def createModelExplanation(sentenceToExplain, modelExplanationFilename):
         classifier_fn=classify,
         # How many labels to explain. We just want to explain the single most likely label.
         # labels=tuple(logreg.classes_),
-        top_labels=len(model.logreg.classes_),
+        top_labels=2,
+        # top_labels=len(model.logreg.classes_),
         # How many words in our sentence to include in the explanation. You can try different values.
         num_features=100,
         num_samples=10000
@@ -81,6 +82,7 @@ if __name__ == '__main__':
     # testSentence = "Mans mērķis ir pārņemt pasauli."
 
     testSentence = "mērķis ir Izpētīt dažādas metodes teksta temata klasifikācijai, implementēt tās tekstiem latviešu valodā un salīdzināt tās"
+    testSentence="analizēt iegūtos rezultātu un veikt secinājumus par ūdens apjomu okeānā."
     # testSentence="Izpētīt biežāk lietotās metodes"
     output_filename = os.path.join(modelStoragePath,
         "model_{}_{}_explanation.html".format(model.modelName, model.modelVersion))

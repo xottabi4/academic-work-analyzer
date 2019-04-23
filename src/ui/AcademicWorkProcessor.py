@@ -7,9 +7,9 @@ from src.pdf_processing.vector_based.Label import Label
 from src.pdf_processing.vector_based.models.Doc2VecModel import Doc2vecModel
 from src.pdf_processing.vector_based.models.FastTextModel import FastTextModel
 
-version = "21"
-# model = Doc2vecModel(version)
+# model = Doc2vecModel("21")
 model = FastTextModel("1")
+
 
 def processAcademicWork(filePath):
     abstract = extractAbstract(filePath)
@@ -25,7 +25,7 @@ def extractDataFromAbstract(abstract):
     abstractSentences = SENTENCE_SPLITTER.tokenize(abstract)
     matrix = populatePredictionMatrix(abstractSentences)
     purpoiseSentenceIndex = findPurposeSentenceIndex(matrix)
-    rowMaximum = np.argmax(matrix, axis=1)
+    rowMaximum = findMaxAcceptableValueInRow(matrix)
 
     result = dict()
     if purpoiseSentenceIndex is None:
@@ -59,7 +59,7 @@ def findPurposeSentenceIndex(matrix):
     labels = model.logreg.classes_
     purposeLocation = np.where(labels == Label.PURPOSE.value)
 
-    rowMaximum = np.argmax(matrix, axis=1)
+    rowMaximum = findMaxAcceptableValueInRow(matrix)
     if purposeLocation not in rowMaximum:
         return None
 
@@ -72,12 +72,27 @@ def findPurposeSentenceIndex(matrix):
     return purpoiseSentenceIndex[0]
 
 
+def findMaxAcceptableValueInRow(matrix):
+    maxValuePositionInRow = np.argmax(matrix, axis=1)
+    maxValueInRow = np.amax(matrix, axis=1)
+
+    acceptableValuePositioninRow = maxValuePositionInRow.copy()
+    maskIndices = np.where(maxValueInRow <= 0.5)[0]
+
+    acceptableValuePositioninRow[maskIndices] = -1
+    return acceptableValuePositioninRow
+
+
 def populatePredictionMatrix(abstractSentences):
     data = list()
     for idx, sentence in enumerate(abstractSentences):
         sentenceWords = removeCommonWordsAndTokenize(sentence)
         print(sentenceWords)
-        testSentenceVector = model.calculateSentenceVector(sentenceWords)
+        try:
+            testSentenceVector = model.calculateSentenceVector(sentenceWords)
+        except ValueError:
+            data.append(np.zeros(len(model.logreg.classes_)))
+            continue
         proba = model.logreg.predict_proba([testSentenceVector])
         data.append(proba[0])
     matrix = np.array(data)

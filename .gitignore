@@ -110,6 +110,4 @@ venv.bak/
 /notes.txt
 src/crawlers/properties.py
 /resources/academicFiles
-/resources/models/bad/
-/resources/models/pretrained/
 /resources/models/

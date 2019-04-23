@@ -43,3 +43,11 @@ class TestExtractDataFromAbstract(TestCase):
         for k, v in data.items():
             print(k, v)
             self.assertFalse(v)
+
+    def test_empty_sentence(self):
+        text = " ."
+        data = extractDataFromAbstract(text)
+
+        for k, v in data.items():
+            print(k, v)
+            self.assertFalse(v)
