@@ -88,6 +88,9 @@ def populatePredictionMatrix(abstractSentences):
     for idx, sentence in enumerate(abstractSentences):
         sentenceWords = removeCommonWordsAndTokenize(sentence)
         print(sentenceWords)
+        if len(sentenceWords) == 1 and sentenceWords[0] == "SKAITLIS":
+            data.append(np.zeros(len(model.logreg.classes_)))
+            continue
         try:
             testSentenceVector = model.calculateSentenceVector(sentenceWords)
         except ValueError:

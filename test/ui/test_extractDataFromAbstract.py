@@ -51,3 +51,11 @@ class TestExtractDataFromAbstract(TestCase):
         for k, v in data.items():
             print(k, v)
             self.assertFalse(v)
+
+    def test_one_number_sentence(self):
+        text = "2."
+        data = extractDataFromAbstract(text)
+
+        for k, v in data.items():
+            print(k, v)
+            self.assertFalse(v)

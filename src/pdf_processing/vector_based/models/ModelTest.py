@@ -12,7 +12,8 @@ if __name__ == '__main__':
     # model.train(trainDatabase)
     model.test(testDatabase)
 
-    print(model.model.wv.vocab)
+    # print(model.model.wv.)
+    print(len(model.model.wv.vectors_ngrams))
     print(len(model.model.wv.vocab))
 
     # print("*"*100)
