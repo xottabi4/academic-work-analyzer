@@ -43,6 +43,6 @@ singledispatch==3.4.0.3
 six==1.11.0
 smart-open==1.7.1
 toolz==0.9.0
-urllib3==1.24
+urllib3==1.26.5
 uWSGI==2.0.17.1
 Werkzeug==0.14.1
