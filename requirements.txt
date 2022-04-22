@@ -31,7 +31,7 @@ pip-autoremove==0.9.1
 pycryptodome==3.6.6
 pymongo==3.7.2
 pyparsing==2.3.0
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 python-dateutil==2.7.5
 PyWavelets==1.0.1
 requests==2.20.0
