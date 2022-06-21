@@ -24,7 +24,7 @@ MarkupSafe==1.1.0
 matplotlib==3.0.2
 networkx==2.2
 nltk==3.4
-numpy==1.15.4
+numpy==1.22.0
 pdfminer.six==20170720
 Pillow==5.4.1
 pip-autoremove==0.9.1
